@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="pt-BR"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#10151f"><link rel="manifest" href="manifest.webmanifest">
+<title>FF Sensi Finder</title>
+<style>
+*{box-sizing:border-box}body{margin:0;padding:20px;background:radial-gradient(circle at top,#273b51,#0b1018 68%);font-family:Arial,sans-serif;color:#f5f7fb}
+main{max-width:760px;margin:auto}.hero{text-align:center;padding:16px 0 22px}h1{margin:0;color:#71e9aa;font-size:clamp(29px,7vw,43px);letter-spacing:1px}.sub{color:#9eacbf;font-size:11px;letter-spacing:1.4px;margin-top:8px}
+.search{display:flex;gap:8px;margin:14px 0}.search input{flex:1;min-width:0;padding:14px;border-radius:12px;border:1px solid #3a4b61;background:#151d29;color:#fff;font-size:15px}.search button,.install{border:0;border-radius:12px;padding:12px 16px;background:#35d995;color:#07150f;font-weight:800;cursor:pointer}
+.filters{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0 18px}.filter{background:#172333;border:1px solid #34465d;color:#cbd7e5;border-radius:20px;padding:8px 11px;font-size:11px;cursor:pointer}.filter.active{background:#1e6549;border-color:#35d995;color:#fff}
+.card{background:#151d29;border:1px solid #34465d;border-radius:17px;padding:16px;margin:11px 0}.top{display:flex;justify-content:space-between;gap:10px;align-items:start}.card h2{margin:0;font-size:19px}.tag{font-size:10px;color:#b9c8d9;border:1px solid #43566d;padding:5px 8px;border-radius:20px}.muted{color:#a2b1c3;font-size:12px;line-height:1.5;margin:8px 0}.pending{color:#f2cb78;font-size:12px;margin-top:8px}.section{font-size:12px;color:#75efb0;letter-spacing:1px;margin:20px 2px 8px}.notice{font-size:11px;line-height:1.6;color:#a8b6c7;margin:22px 2px}.count{color:#8fa1b6;font-size:11px;margin:8px 2px}
+</style></head><body><main>
+<header class="hero"><h1>FF SENSI FINDER</h1><div class="sub">CATÁLOGO DE CRIADORES DE FREE FIRE</div></header>
+<button class="install" id="install" hidden>INSTALAR NO CELULAR</button>
+<div class="search"><input id="q" placeholder="Pesquise Nobru, BAK, Coringa..." autocomplete="off"><button id="go">BUSCAR</button></div>
+<div class="filters"><button class="filter active" data-filter="all">Todos</button><button class="filter" data-filter="pending">Aguardando configuração verificada</button></div>
+<div class="count" id="count"></div><div id="results"></div>
+<p class="notice"><b>Sobre as configurações:</b> esta versão reúne nomes de criadores associados ao Free Fire. Só exibirá valores quando houver uma fonte pública específica e verificável; não inventa sensibilidade, DPI ou HUD. As configurações mudam conforme aparelho, versão e preferência do jogador. O catálogo não é afiliado aos criadores nem à Garena.</p>
+</main><script>
+let creators=[];
+fetch('creators.json').then(r=>r.json()).then(d=>{creators=d;render()}).catch(()=>{document.getElementById('results').textContent='Não foi possível carregar a lista. Mantenha creators.json na mesma pasta do aplicativo.'});
+let filter='all';
+function render(){
+ const term=document.getElementById('q').value.trim().toLocaleLowerCase('pt-BR');
+ const arr=creators.filter(x=>(filter==='all'||!x.values)&&(!term||x.name.toLocaleLowerCase('pt-BR').includes(term)));
+ document.getElementById('count').textContent=arr.length+' perfis encontrados';
+ const root=document.getElementById('results');root.innerHTML='';
+ arr.forEach(x=>{const c=document.createElement('section');c.className='card';const top=document.createElement('div');top.className='top';const h=document.createElement('h2');h.textContent=x.name;const tag=document.createElement('span');tag.className='tag';tag.textContent='PERFIL NO CATÁLOGO';top.append(h,tag);c.append(top);const m=document.createElement('p');m.className='muted';m.textContent=x.category;c.append(m);const p=document.createElement('div');p.className='pending';p.textContent=x.note;c.append(p);root.append(c)});
+ if(!arr.length)root.textContent='Nenhum perfil encontrado.';
+}
+document.getElementById('go').onclick=render;document.getElementById('q').addEventListener('keydown',e=>{if(e.key==='Enter')render()});
+document.querySelectorAll('.filter').forEach(b=>b.onclick=()=>{document.querySelectorAll('.filter').forEach(x=>x.classList.remove('active'));b.classList.add('active');filter=b.dataset.filter;render()});
+let deferredPrompt;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;document.getElementById('install').hidden=false});
+document.getElementById('install').onclick=async()=>{if(deferredPrompt){deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null}else alert('No Chrome, abra o menu ⋮ e escolha “Instalar app” ou “Adicionar à tela inicial”.')};
+if('serviceWorker' in navigator && location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js');
+</script></body></html>

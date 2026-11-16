@@ -1,0 +1,11 @@
+FF SENSI FINDER — pacote Android (PWA)
+
+O ZIP contém o aplicativo web e a lista pesquisável de perfis.
+
+IMPORTANTE:
+- Ao extrair o ZIP no Android, os arquivos ficam na pasta Downloads, mas isso NÃO instala um aplicativo Android (.APK).
+- Para instalar com ícone na tela inicial, publique esta pasta em um endereço HTTPS e abra o endereço no Chrome Android. Depois toque em Instalar app ou Menu ⋮ > Adicionar à tela inicial.
+- O service worker/PWA requer HTTPS ou localhost. Abrir index.html diretamente do gerenciador de arquivos pode não habilitar instalação offline.
+- Este pacote não contém APK assinado. Não é seguro prometer instalação nativa a partir de um ZIP.
+- Os nomes são uma lista ampla de criadores associados ao Free Fire, não uma alegação de que sejam todos os influenciadores existentes ou todos os mais populares neste momento.
+- As configurações pessoais não confirmadas ficam marcadas como pendentes; nenhum número é inventado.

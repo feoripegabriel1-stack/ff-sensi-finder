@@ -1,0 +1,9 @@
+{
+  "name": "FF Sensi Finder",
+  "short_name": "FF Sensi",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0b1018",
+  "theme_color": "#10151f",
+  "description": "Catálogo pesquisável de criadores de Free Fire"
+}
